@@ -23,6 +23,7 @@ The result should be an<mark> end-to-end working flow from UI to REST endpoints<
 - Server (BackEnd):
   
   - [GitHub - AlbertProfe/ApartmentPredictor](https://github.com/AlbertProfe/ApartmentPredictor)
+  - [Create JAR from backend Spring Boot](https://github.com/AlbertProfe/ApartmentPredictor-React/blob/master/docs/appends/DATA-create-JAR.md)
 
 - React:
   

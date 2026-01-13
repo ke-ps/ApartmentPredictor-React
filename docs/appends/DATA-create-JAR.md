@@ -1,5 +1,3 @@
-
-
 # Maven JAR build (console)
 
 ## JAR
@@ -63,6 +61,8 @@ If you want to skip tests (sometimes useful locally):
 mvn clean package -DskipTests
 ```
 
+![](https://raw.githubusercontent.com/AlbertProfe/ApartmentPredictor-React/refs/heads/master/docs/screenshots/CREATE-JAR-1.png)
+
 ### Where to find the JAR
 
 After a successful build, check:
@@ -75,10 +75,22 @@ Commonly it looks like:
 
 ### How to run the JAR
 
+![](https://raw.githubusercontent.com/AlbertProfe/ApartmentPredictor-React/refs/heads/master/docs/screenshots/CREATE-JAR-2.png)
+
 Run:
 
 ```bash
 java -jar target/<your-jar-name>.jar
 ```
 
+![](https://raw.githubusercontent.com/AlbertProfe/ApartmentPredictor-React/refs/heads/master/docs/screenshots/CREATE-JAR-3.png)
 
+## How to check API REST
+
+Open browser and:
+
+- navigate to endpoint url:` http://localhost:8080/api/apartment/getAll`
+
+- or test by POSTMAN [apartmentPredictorCRUD](https://documenter.getpostman.com/view/7473960/2sBXVeFs8L))
+
+![](https://raw.githubusercontent.com/AlbertProfe/ApartmentPredictor-React/refs/heads/master/docs/screenshots/CREATE-JAR-4.png)
