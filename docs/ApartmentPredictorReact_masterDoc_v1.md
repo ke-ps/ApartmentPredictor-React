@@ -1,18 +1,128 @@
-# ApartmentPredictor-Reaxt masterDoc v1
+# ApartmentPredictor-React masterDoc v1
 
 ## Summary and Goal
 
-to
+> The goal of this phase is to build a **React front-end** that consumes our existing Apartment Predictor **REST API **as documented in **Postman**. 
+
+The backend will run locally as a packaged Spring Boot application executed with `java -jar <server>.jar`, and the React application will communicate with it via **Axios** HTTP calls. 
+
+The `React UI` will provide a clean, responsive view focused on apartment browsing and management: 
+
+- it will display `apartments` as a list of <mark>cards</mark> (showing key fields such as price, area, bedrooms, bathrooms, and status attributes), 
+
+- and it will support **full CRUD operations** (create new apartments, edit existing ones, view details, and delete). 
+
+- In addition, the UI will enable `review` management per apartment: users will be able to open an apartment detail view and post reviews linked to that specific apartment, as well as read existing reviews. 
+
+The result should be an<mark> end-to-end working flow from UI to REST endpoints</mark> (and from there Spring Boot and H2 will implement the BackEnd).
+
+## References
+
+- Server (BackEnd):
+  
+  - [GitHub - AlbertProfe/ApartmentPredictor](https://github.com/AlbertProfe/ApartmentPredictor)
+
+- React:
+  
+  - https://react.dev/learn/describing-the-ui
+
+- [Lab#RE07-1: traffic lights simulation – albertprofe wiki](https://albertprofe.dev/reactjs/rjslab7-1.html)
+
+- [Lab#RE01-1: API Rest Axios – albertprofe wiki](https://albertprofe.dev/reactjs/rjslab1.html)
+
+- [Lab#RE06-1: healthyFood Restaurant – albertprofe wiki](https://albertprofe.dev/reactjs/rjslab6-1.html)
 
 ## Project Structure
 
-todo
+```textile
+dictorProject-React/ApartmentPredictor-React (master)
+$ tree -L 3
+.
+├── eslint.config.js
+├── index.html
+├── node_modules
+│   ├── acorn
+│   ....
+│   ├── zod
+│   └── zod-validation-error
+├── package.json
+├── package-lock.json
+├── public
+│   └── vite.svg
+├── README.md
+├── src
+│   ├── App.css
+│   ├── App.jsx
+│   ├── assets
+│   ├── index.css
+│   └── main.jsx
+└── vite.config.js
+```
 
 ## DATA REST endpoint
 
-todo
+- [apartmentPredictorCRUD](https://documenter.getpostman.com/view/7473960/2sBXVeFs8L)
+
+
+
+Data model:
+
+```json
+[
+  {
+    "id": "2aacac51-4eea-4f7d-8a03-227751c23ba2",
+    "price": null,
+    "area": 5,
+    "bedrooms": null,
+    "bathrooms": null,
+    "stories": null,
+    "mainroad": null,
+    "guestroom": null,
+    "basement": null,
+    "hotwaterheating": null,
+    "airconditioning": null,
+    "parking": null,
+    "prefarea": null,
+    "furnishingstatus": null,
+    "reviews": [{...}, {...}, {...}]
+  },
+  {..}
+]
+```
 
 ## Code
+
+## Axios
+
+- https://axios-http.com/
+
+
+
+> Axios is a <mark>simple promise based HTTP client for the browser and node.js</mark>. Axios provides a simple to use library in a small package with a very extensible interface.
+
+Installing
+
+Using npm:
+
+```
+$ npm install axios
+```
+
+## ApartmentList
+
+The `ApartmentLis`t component <mark>fetches apartment data from an API endpoint</mark> (`/api/apartment/getAll`) using `axios`.
+
+It manages three state variables: 
+
+- apartments (stores the fetched data), 
+
+- isLoading (tracks loading status), 
+
+- and isAxiosError (for error handling). 
+
+> On component mount, a `useEffect` hook triggers an `async` fetch request. While loading, it displays "Loading...". Once data arrives, it **maps** through the apartments array and **renders** each apartment as a list item, displaying all properties like price, area, bedrooms, bathrooms, and amenities. 
+
+The component excludes the reviews field from the display.
 
 ```jsx
 import axios from "axios";
@@ -73,6 +183,40 @@ const ApartmentList = () => {
 };
 
 export default ApartmentList;
+```
+
+## package.json
+
+```json
+{
+  "name": "apartmentpredictor-react",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "axios": "^1.13.2",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
+    "babel-plugin-react-compiler": "^1.0.0",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "vite": "^7.2.4"
+  }
+}
 ```
 
 ## Tech Stack
