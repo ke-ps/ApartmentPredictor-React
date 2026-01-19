@@ -30,26 +30,32 @@ const ApartmentList = () => {
       {isLoading ? (
         <p>Loading...</p>
       ) : (
-        <ul>
-          {apartments.map((apartment) => (
-            <li key={apartment.id}>
-              <strong>ID:</strong> {apartment.id} <br />
-              <strong>Price:</strong> {apartment.price} <br />
-              <strong>Area:</strong> {apartment.area} <br />
-              <strong>Bedrooms:</strong> {apartment.bedrooms} <br />
-              <strong>Bathrooms:</strong> {apartment.bathrooms} <br />
-              <strong>Stories:</strong> {apartment.stories} <br />
-              <strong>Main Road:</strong> {apartment.mainroad} <br />
-              <strong>Guest Room:</strong> {apartment.guestroom} <br />
-              <strong>Basement:</strong> {apartment.basement} <br />
-              <strong>Hot Water Heating:</strong> {apartment.hotwaterheating} <br />
-              <strong>Air Conditioning:</strong> {apartment.airconditioning} <br />
-              <strong>Parking:</strong> {apartment.parking} <br />
-              <strong>Preferred Area:</strong> {apartment.prefarea} <br />
-              <strong>Furnishing Status:</strong> {apartment.furnishingstatus}
-            </li>
-          ))}
-        </ul>
+        isAxiosError ? (
+          <p>Error loading apartments. Please try again later.</p>
+        ) : (
+          <ul>
+            {apartments.map((apartment) => (
+              <li key={apartment.id}>
+                <strong>ID:</strong> {apartment.id} <br />
+                <strong>Price:</strong> {apartment.price} <br />
+                <strong>Area:</strong> {apartment.area} <br />
+                <strong>Bedrooms:</strong> {apartment.bedrooms} <br />
+                <strong>Bathrooms:</strong> {apartment.bathrooms} <br />
+                <strong>Stories:</strong> {apartment.stories} <br />
+                <strong>Main Road:</strong> {apartment.mainroad} <br />
+                <strong>Guest Room:</strong> {apartment.guestroom} <br />
+                <strong>Basement:</strong> {apartment.basement} <br />
+                <strong>Hot Water Heating:</strong> {apartment.hotwaterheating}{" "}
+                <br />
+                <strong>Air Conditioning:</strong> {apartment.airconditioning}{" "}
+                <br />
+                <strong>Parking:</strong> {apartment.parking} <br />
+                <strong>Preferred Area:</strong> {apartment.prefarea} <br />
+                <strong>Furnishing Status:</strong> {apartment.furnishingstatus}
+              </li>
+            ))}
+          </ul>
+        )
       )}
     </>
   );
