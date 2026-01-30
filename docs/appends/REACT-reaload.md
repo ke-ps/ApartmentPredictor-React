@@ -1,7 +1,5 @@
 # Reload Button + Hook: New Refresh Feature
 
-# 
-
 ## Summary
 
 > Clicking "Reload" fetches fresh apartment data from the API without page refresh.
@@ -9,6 +7,14 @@
 > The view shouldn't know *how* to fetch data - it just triggers refresh. The hook handles the complexity.
 
 ## **How it works**
+
+**0. Place button on view**
+
+```jsx
+<button onClick={handlereload}>Reload </button>
+```
+
+button: <button onClick={handlereload}>Reload </button>
 
 **1. Hook manages reload counter**
 
