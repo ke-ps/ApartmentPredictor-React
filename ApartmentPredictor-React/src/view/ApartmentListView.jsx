@@ -1,4 +1,15 @@
-const ApartmentListView = ({ apartments, isLoading, isAxiosError }) => {
+const ApartmentListView = ({
+  apartments,
+  isLoading,
+  isAxiosError,
+  reload,
+  setReload,
+}) => {
+  const handlereload = () => {
+    setReload((prev) => prev + 1);
+    console.log("Reloading apartments...", reload + 1);
+  };
+
   if (isLoading) {
     return (
       <>
@@ -23,6 +34,8 @@ const ApartmentListView = ({ apartments, isLoading, isAxiosError }) => {
     <>
       <h1>Apartments</h1>
       <p>This is an exercise to test react render</p>
+      <button onClick={handlereload}>Reload </button>
+      <p></p>
       <ul className="apartment-list">
         {apartments.map((apartment) => (
           <li key={apartment.id} className="apartment-item">

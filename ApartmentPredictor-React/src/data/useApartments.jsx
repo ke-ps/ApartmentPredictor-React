@@ -5,6 +5,7 @@ export const useApartments = () => {
   const [apartments, setApartments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isAxiosError, setIsAxiosError] = useState(false);
+  const [reload, setReload] = useState(0);
 
   useEffect(() => {
     const fetchApartments = async () => {
@@ -27,7 +28,7 @@ export const useApartments = () => {
     };
 
     fetchApartments();
-  }, []);
+  }, [reload]);
 
-  return { apartments, isLoading, isAxiosError };
+  return { apartments, isLoading, isAxiosError, reload, setReload };
 };
