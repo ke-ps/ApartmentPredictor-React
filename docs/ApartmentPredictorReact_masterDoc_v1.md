@@ -4,7 +4,7 @@
 
 ### Goal
 
-> The goal of this phase is to build a **React front-end** that consumes our existing Apartment Predictor **REST API **as documented in **Postman**. 
+> The goal of this phase is to build a **React front-end** that consumes our existing Apartment Predictor **REST API as documented in Postman**. 
 
 The backend will run locally as a packaged Spring Boot application executed with `java -jar <server>.jar`, and the React application will communicate with it via **Axios** HTTP calls. 
 
@@ -60,6 +60,28 @@ $ tree -L 3
 │   ├── index.css
 │   └── main.jsx
 └── vite.config.js
+```
+
+After decoupling
+
+```textile
+[Fri Jan 30 08:26:09] albert@albert-VirtualBox:~/MyProjects/Sandbox/ApartmentPredictorProject-React/ApartmentPredictor-React/src (master)
+$ tree
+.
+├── apartment
+│   └── ApartmentList.jsx
+├── App.css
+├── App.jsx
+├── assets
+│   └── react.svg
+├── data
+│   └── useApartments.jsx
+├── index.css
+├── main.jsx
+└── view
+    └── ApartmentListView.jsx
+
+5 directories, 8 files
 ```
 
 ## DATA REST endpoint
@@ -183,6 +205,60 @@ const ApartmentList = () => {
 
 export default ApartmentList;
 ```
+
+## Decoupling
+
+Decoupling this component separates **concerns**, making the code easier to reason about, test, and reuse. 
+
+> In the original version, the component both fetched data and rendered the UI, so any change in one concern risked affecting the other. 
+
+By extracting the fetch logic into `useApartments`, we isolate all API, loading, and error management in a single, dedicated place. This <mark>hook</mark> can now be reused by other components that might need the same apartment data, without duplicating axios calls or state handling.
+
+`ApartmentListView` becomes <mark>purely presentational:</mark> it receives props and focuses only on how to display them. This makes it simpler to test with mock data and easier to tweak the layout, styles, or structure without touching any async logic. 
+
+The container `ApartmentList` acts as the glue: it calls `useApartments` and passes the resulting state down to the view.
+
+> This pattern (hook + view + container) scales well as the app grows, encourages clear boundaries between logic and UI, and keeps components small, focused, and maintainable over time.
+
+3-Step Decoupling
+
+**1. Extract logic → Custom Hook**
+
+```jsx
+// Before: fetch INSIDE component
+useEffect(() => { axios.get(...) })
+
+// After: useApartments.js
+export const useApartments = () => {
+  const [data, loading, error] = useFetch("/api/apartments");
+  return { data, loading, error };
+};
+```
+
+**2. Pure View → Props Only**
+
+```jsx
+// Before: fetches + renders
+const ApartmentList = () => { ... }
+
+// After: ApartmentListView.jsx
+const ApartmentListView = ({ apartments, loading, error }) => {
+  if (loading) return <p>Loading...</p>;
+  return <ul>{apartments.map(...)}</ul>;
+};
+```
+
+**3. Container Wires Them** (this is the glue-container)
+
+```jsx
+// ApartmentList.jsx
+const ApartmentList = () => {
+  const { apartments, loading, error } = useApartments();
+  return <ApartmentListView {...{ apartments, loading, error }} />;
+};
+```
+
+**Result**: Logic reusable, View testable with props, Container minimal.
 
 ## package.json
 
