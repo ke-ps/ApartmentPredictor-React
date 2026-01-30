@@ -2,13 +2,18 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 export const useApartments = () => {
+  // State to hold apartments data, loading status, and error status
   const [apartments, setApartments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isAxiosError, setIsAxiosError] = useState(false);
 
+  // Fetch apartments data from the API
+  // and handle loading and error states
   useEffect(() => {
+    // Define an async function to fetch data
     const fetchApartments = async () => {
       try {
+        // Make GET request to the API endpoint
         const response = await axios.get("/api/apartment/getAll");
         console.log("API Response:", response);
         console.log("Apartments Data:", response.data);
@@ -25,9 +30,10 @@ export const useApartments = () => {
         setIsLoading(false);
       }
     };
-
+    // Call the function to
     fetchApartments();
   }, []);
 
+  // Return the apartments data, loading status, and error status
   return { apartments, isLoading, isAxiosError };
 };

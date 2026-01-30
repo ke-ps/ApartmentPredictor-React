@@ -1,4 +1,6 @@
 const ApartmentListView = ({ apartments, isLoading, isAxiosError }) => {
+
+  // Render loading state
   if (isLoading) {
     return (
       <>
@@ -9,6 +11,7 @@ const ApartmentListView = ({ apartments, isLoading, isAxiosError }) => {
     );
   }
 
+  // Render error state
   if (isAxiosError) {
     return (
       <>
@@ -19,11 +22,16 @@ const ApartmentListView = ({ apartments, isLoading, isAxiosError }) => {
     );
   }
 
+  // Render apartments list
   return (
     <>
       <h1>Apartments</h1>
       <p>This is an exercise to test react render</p>
       <ul className="apartment-list">
+        {// Map through apartments and display their details
+        // Each apartment is rendered as a list item with key as apartment.id
+        // The details include price, area, bedrooms, bathrooms, stories, and features
+        }
         {apartments.map((apartment) => (
           <li key={apartment.id} className="apartment-item">
             <div className="apartment-header">
