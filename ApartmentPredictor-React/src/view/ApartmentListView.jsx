@@ -1,74 +1,39 @@
-const ApartmentListView = ({ apartments, isLoading, isAxiosError }) => {
-
-  // Render loading state
-  if (isLoading) {
-    return (
-      <>
-        <h1>Apartments</h1>
-        <p>This is an exercise to test react render</p>
-        <p>Loading...</p>
-      </>
-    );
-  }
-
-  // Render error state
-  if (isAxiosError) {
-    return (
-      <>
-        <h1>Apartments</h1>
-        <p>This is an exercise to test react render</p>
-        <p>Error loading apartments. Please try again later.</p>
-      </>
-    );
-  }
-
-  // Render apartments list
+const ApartmentListView = ({ apartments, selectedApartment, onSelect }) => {
+  if (selectedApartment) {
   return (
-    <>
-      <h1>Apartments</h1>
-      <p>This is an exercise to test react render</p>
-      <ul className="apartment-list">
-        {// Map through apartments and display their details
-        // Each apartment is rendered as a list item with key as apartment.id
-        // The details include price, area, bedrooms, bathrooms, stories, and features
-        }
-        {apartments.map((apartment) => (
-          <li key={apartment.id} className="apartment-item">
-            <div className="apartment-header">
-              ID: {apartment.id} | ${apartment.price}
-            </div>
+    <div>
+          <h2>{selectedApartment.title}</h2>
+          <p>{apt.city}</p>
+          <p>Precio: {apt.price} €</p>
+          <p>Habitaciones: {apt.rooms}</p>
+          <p>Baños: {apt.bathrooms}</p>
+          <p>Tamaño: {apt.size} m²</p>
+          <p>Parking: {apt.parking ? "Sí" : "No"}</p>
+          <p>Terraza: {apt.terrace ? "Sí" : "No"} </p>
+          <p>Piscina: {apt.pool ? "Sí" : "No"} </p>
+          <p>Disponible: {apt.available ? "Sí" : "No"} </p>
+          <button onClick={() => onSelect(null)}>Volver a la lista</button>
+          
+    </div>
+    );
+}
 
-            <div className="apartment-grid">
-              <div>
-                <strong>Area:</strong> {apartment.area} sq ft
-              </div>
-              <div>
-                <strong>Bedrooms:</strong> {apartment.bedrooms}
-              </div>
-              <div>
-                <strong>Bathrooms:</strong> {apartment.bathrooms}
-              </div>
-              <div>
-                <strong>Stories:</strong> {apartment.stories}
-              </div>
-            </div>
+return (
+  <div>
+    <h1>Apartments</h1>
+    <ul>
+      {apartments.map((apt) => (
+        <li
+          key={apt.id}
+          onClick={()=> onSelect(apt)}
+          style={{ cursor: "pointer", marginBottom: "1rem" }}
+        >
+            <strong>{apt.title} </strong> - {apt.city} | Precio: {apt.price} €
+        </li>
 
-            <div className="apartment-features">
-              <span>Main Road: {apartment.mainroad}</span>
-              <span>Parking: {apartment.parking}</span>
-              <span>Guestroom: {apartment.guestroom}</span>
-              <span>Basement: {apartment.basement}</span>
-            </div>
-
-            <div className="apartment-meta">
-              Hot Water: {apartment.hotwaterheating} | AC:{" "}
-              {apartment.airconditioning} | Pref Area: {apartment.prefarea} |
-              Furnishing: {apartment.furnishingstatus}
-            </div>
-          </li>
-        ))}
-      </ul>
-    </>
+      ))}
+    </ul>
+  </div>
   );
 };
 
