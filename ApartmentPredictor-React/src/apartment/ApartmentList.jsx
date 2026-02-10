@@ -1,24 +1,25 @@
 import {useState} from "react";
 import {apartments} from "../data/apartments";
-import ApartmentListView from "../view/ApartmentListView";
 
-const ApartmentList = () => {
-const [apartmentList, setApartmentList] = useState(apartments);
-const [selectedApartment, setSelectedApartment] =useState(null);
-const handleSelectApartment = (apt) => {
-  console.log("Seleccionando", apt);
-  setSelectedApartment (apt);
-};
 
-  return ( 
-  <ApartmentListView 
-  apartments={apartmentList}
-  selectedApartment={selectedApartment}
-  onSelect={handleSelectApartment} 
-  />
+const ApartmentList = ({onSelectApartment}) => {
+  const [apartmentList] = useState(apartments);
+
+return (
+<div>
+  {apartmentList.map((apt) => (
+    <div
+    key={apt.id}
+    style={{cursor: "pointer", marginBottom: "1rem"}}
+    onClick={() => onSelectApartment (apt)}
+    >
+      <h2>{apt.title}</h2>
+      <p> {apt.city} </p>
+    </div>
+  ))}
+  </div>
   );
       
 };
   
-
 export default ApartmentList;
