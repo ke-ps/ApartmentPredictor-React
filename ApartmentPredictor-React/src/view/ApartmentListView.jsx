@@ -1,20 +1,20 @@
 const ApartmentListView = ({ apartments, selectedApartment, onSelect }) => {
   if (selectedApartment) {
   return (
-    <div>
-          <h2>{selectedApartment.title}</h2>
-          <p>{apt.city}</p>
-          <p>Precio: {apt.price} €</p>
-          <p>Habitaciones: {apt.rooms}</p>
-          <p>Baños: {apt.bathrooms}</p>
-          <p>Tamaño: {apt.size} m²</p>
-          <p>Parking: {apt.parking ? "Sí" : "No"}</p>
-          <p>Terraza: {apt.terrace ? "Sí" : "No"} </p>
-          <p>Piscina: {apt.pool ? "Sí" : "No"} </p>
-          <p>Disponible: {apt.available ? "Sí" : "No"} </p>
-          <button onClick={() => onSelect(null)}>Volver a la lista</button>
-          
-    </div>
+<div>
+  <h2>{selectedApartment.title}</h2>
+  <p>{selectedApartment.city}</p>
+  <p>Precio: {selectedApartment.price} €</p>
+  <p>Habitaciones: {selectedApartment.rooms}</p>
+  <p>Baños: {selectedApartment.bathrooms}</p>
+  <p>Tamaño: {selectedApartment.size} m²</p>
+  <p>Parking: {selectedApartment.parking ? "Sí" : "No"}</p>
+  <p>Terraza: {selectedApartment.terrace ? "Sí" : "No"} </p>
+  <p>Piscina: {selectedApartment.pool ? "Sí" : "No"} </p>
+  <p>Disponible: {selectedApartment.available ? "Sí" : "No"} </p>
+  <button onClick={() => onSelect(null)}>Volver a la lista</button>
+</div>
+
     );
 }
 

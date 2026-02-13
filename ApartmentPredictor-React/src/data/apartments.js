@@ -6,7 +6,7 @@ export const apartments = [{
     rooms: 4,
     bathrooms: 2,
     size: 90,
-    parking: true,
+    parking: false,
     terrace: true,
     pool: false,
     available: true

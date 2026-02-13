@@ -1,36 +1,41 @@
-import {useState} from "react";
+import { useState } from "react";
+import { apartments } from "./data/apartments.js";
 import ApartmentList from "./apartment/ApartmentList";
+import ApartmentForm from "./apartment/ApartmentForm";
 
+function App() {
+  const [apartmentsList, setApartmentsList] = useState(apartments);
+  const [selectedApartment, setSelectedApartment] = useState(null);
+  const [viewMode, setViewMode] = useState("list");
 
-
- function App() {
-   const [apartmentSelected, setApartmentSelected] = useState (null);
-
+  const handleSaveApartments = (newApartment) => {
+    const id = apartmentsList.length + 1;
+    const apartmentToAdd = { id, ...newApartment };
+    setApartmentsList([...apartmentsList, apartmentToAdd]);
+    setViewMode("list");
+  };
 
   return (
-    <div className="App">
-      <h1>Bienvenido al Predictor de Apartamentos</h1>
-    
+    <div>
+      <h1>Apartment Predictor</h1>
 
-     <ApartmentList onSelectApartment={setApartmentSelected} />
+      <button onClick={() => setViewMode("form")}>
+        Nuevo apartamento
+      </button>
 
-     {apartmentSelected && (
-      <div>
-          <h2>{apartmentSelected.title}</h2>
-          <p>{apartmentSelected.city}</p>
-          <p>Precio: {apartmentSelected.price} €</p>
-          <p>Habitaciones: {apartmentSelected.rooms}</p>
-          <p>Baños: {apartmentSelected.bathrooms}</p>
-          <p>Tamaño: {apartmentSelected.size} m²</p>
-          <p>Parking: {apartmentSelected.parking ? "Sí" : "No"}</p>
-          <p>Terraza: {apartmentSelected.terrace ? "Sí" : "No"}</p>
-          <p>Piscina: {apartmentSelected.pool ? "Sí" : "No"}</p>
-          <p>Disponible: {apartmentSelected.available ? "Sí" : "No"}</p>
-        </div>
-      
+      {viewMode === "list" && (
+        <ApartmentList
+          apartments={apartmentsList}
+          onSelectApartment={setSelectedApartment}
+        />
+      )}
+
+      {viewMode === "form" && (
+        <ApartmentForm onSave={handleSaveApartments} />
       )}
     </div>
   );
 }
 
 export default App;
+
