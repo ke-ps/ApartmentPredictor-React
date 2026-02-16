@@ -1,19 +1,38 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const ApartmentForm = ({ onSave }) => {
+const ApartmentForm = ({ onSave, apartmentToEdit, onCancel }) => {
+  // Estados de cada campo
   const [title, setTitle] = useState("");
   const [city, setCity] = useState("");
   const [price, setPrice] = useState("");
   const [rooms, setRooms] = useState("");
   const [bathrooms, setBathrooms] = useState("");
   const [size, setSize] = useState("");
-  const [parking, setParking] = useState();
-  const [terrace, setTerrace] = useState();
-  const [pool, setPool] = useState();
-  const [available, setAvailable] = useState();
+  const [parking, setParking] = useState(false);
+  const [terrace, setTerrace] = useState(false);
+  const [pool, setPool] = useState(false);
+  const [available, setAvailable] = useState(true);
 
+  // useEffect para rellenar campos si estamos editando
+  useEffect(() => {
+    if (apartmentToEdit) {
+      setTitle(apartmentToEdit.title);
+      setCity(apartmentToEdit.city);
+      setPrice(apartmentToEdit.price);
+      setRooms(apartmentToEdit.rooms);
+      setBathrooms(apartmentToEdit.bathrooms);
+      setSize(apartmentToEdit.size);
+      setParking(apartmentToEdit.parking);
+      setTerrace(apartmentToEdit.terrace);
+      setPool(apartmentToEdit.pool);
+      setAvailable(apartmentToEdit.available);
+    }
+  }, [apartmentToEdit]);
+
+  // Función para guardar apartamento
   const handleSave = () => {
     onSave({
+      id: apartmentToEdit?.id, // mantiene el id si estamos editando
       title,
       city,
       price: Number(price),
@@ -29,7 +48,7 @@ const ApartmentForm = ({ onSave }) => {
 
   return (
     <div>
-      <h2>Nuevo apartamento</h2>
+      <h2>{apartmentToEdit ? "Editar Apartamento" : "Nuevo Apartamento"}</h2>
 
       <input
         type="text"
@@ -109,9 +128,17 @@ const ApartmentForm = ({ onSave }) => {
         Disponible
       </label>
 
-      <button onClick={handleSave}>Guardar</button>
+      <div style={{ marginTop: "1rem" }}>
+        <button onClick={handleSave}>Guardar</button>
+        {onCancel && (
+          <button onClick={onCancel} style={{ marginLeft: "1rem" }}>
+            Cancelar
+          </button>
+        )}
+      </div>
     </div>
   );
 };
 
 export default ApartmentForm;
+
