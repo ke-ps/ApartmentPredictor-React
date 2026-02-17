@@ -7,6 +7,11 @@ const ApartmentDetail = ({apartment, onBack, onDelete, onEdit}) => {
             <p><strong>Habitaciones:</strong> {apartment.rooms}</p>
             <p><strong>Baños:</strong> {apartment.bathrooms}</p>
             <p><strong>Tamaño:</strong> {apartment.size}</p>
+            <p><strong>Parking:</strong> {apartment.parking ? "Sí" : "No"}</p>
+            <p><strong>Terraza:</strong> {apartment.terrace ? "Sí" : "No"}</p>
+            <p><strong>Piscina:</strong> {apartment.pool ? "Sí" : "No"}</p>
+            <p><strong>Disponible:</strong> {apartment.available ? "Sí" : "No"}</p>
+
 
             <button onClick={onBack}>
                 Volver a la lista

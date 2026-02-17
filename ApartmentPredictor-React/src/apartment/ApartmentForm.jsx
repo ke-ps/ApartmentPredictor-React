@@ -13,7 +13,7 @@ const ApartmentForm = ({ onSave, apartmentToEdit, onCancel }) => {
   const [pool, setPool] = useState(false);
   const [available, setAvailable] = useState(true);
 
-  // useEffect para rellenar campos si estamos editando
+  
   useEffect(() => {
     if (apartmentToEdit) {
       setTitle(apartmentToEdit.title);
@@ -29,10 +29,10 @@ const ApartmentForm = ({ onSave, apartmentToEdit, onCancel }) => {
     }
   }, [apartmentToEdit]);
 
-  // Función para guardar apartamento
+
   const handleSave = () => {
     onSave({
-      id: apartmentToEdit?.id, // mantiene el id si estamos editando
+      id: apartmentToEdit?.id, 
       title,
       city,
       price: Number(price),
