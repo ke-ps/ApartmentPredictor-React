@@ -20,7 +20,9 @@ The result should be an<mark> end-to-end working flow from UI to REST endpoints<
 
 ## Version Goal
 
-todo
+Version 2 expands the backend into a rich domain model with full **CRUD** for apartments and relations (Schools, Property Contracts, Reviews, Owners, Reviewers), while frontend gains detailed forms and relational views.
+
+
 
 ### References
 
@@ -44,7 +46,9 @@ todo
   - [Lab#RE07-1: traffic lights simulation](https://albertprofe.dev/reactjs/rjslab7-1.html)
   - [Lab#RE01-1: API Rest Axios](https://albertprofe.dev/reactjs/rjslab1.html)
   - [Lab#RE06-1: healthyFood Restaurant](https://albertprofe.dev/reactjs/rjslab6-1.html)
-  - **mathsWeb**: [mathsWeb: repo](https://github.com/AlbertProfe/mathsWeb) /  [mathsWeb: deployed](https://mathswebspace.netlify.app/)
+  - Middleware & Navigation:
+    - **mathsWeb**: [mathsWeb: repo](https://github.com/AlbertProfe/mathsWeb) /  [mathsWeb: deployed](https://mathswebspace.netlify.app/)
+    - **userBorrowBook**: [GitHub - AlbertProfe/userBorrowBookFront](https://github.com/AlbertProfe/userBorrowBookFront/tree/master)
 
 ## Project Structure
 
@@ -159,10 +163,6 @@ DATA REST <mark>endpoint</mark>
 
 ![](https://raw.githubusercontent.com/AlbertProfe/ApartmentPredictor-React/refs/heads/master/docs/diagrams/TREE-ApartmentPredictor_v2.png)
 
-## Code
-
-TODO
-
 ### Axios
 
 > Axios is a <mark>simple promise based HTTP client for the browser and node.js</mark>. Axios provides a simple to use library in a small package with a very extensible interface.
@@ -174,6 +174,213 @@ $ npm install axios
 ```
 
 todo
+
+
+
+## Data Provider: middleware
+
+### useContext vs. custom hook
+
+`useContext` (with a <mark>Context</mark> provider) and a `custom hook` solve different problems:
+
+- **useContext/Context**: shares one *instance* of state/data down a subtree so all consumers see the same value and updates.
+
+- **Custom hook**: shares *logic*, not instances; each component that calls the hook gets its own independent state unless the hook itself reads from some shared store (like Context).
+
+#### What useContext is for
+
+We typically use `Context` when:
+
+- We have data that <mark>must be shared by many components</mark> (auth user, theme, current organization, router-like data).
+
+- We want that data to be “**the same**” for all components under a provider.
+
+- We want **React** to handle subscription and re‑rendering when that shared value changes.
+
+With `Axios` data, that usually means:
+
+1. A `provider` does the fetching once (with `useState`/`useEffect`).
+
+2. The value (data, loading, error, refetch) is stored in `Context`.
+
+3. Any child uses `useContext` to read that value and they all see the same cache.
+
+Very simplified:
+
+```jsx
+const UserContext = createContext(null);
+
+function UserProvider({ children }) {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    axios.get("/api/user").then(res => setUser(res.data));
+  }, []);
+
+  return (
+    <UserContext.Provider value={user}>
+      {children}
+    </UserContext.Provider>
+  );
+}
+
+function Profile() {
+  const user = useContext(UserContext);
+  return <div>{user?.name}</div>;
+}
+
+```
+
+#### What a custom hook is for
+
+A `custom hook` is just a function that uses hooks to encapsulate reusable logic:
+
+- It’s great for hiding Axios + error handling + retries.
+
+- But every call to the hook creates its **own state** (like calling `useState` twice in two components).
+
+For example:
+
+```jsx
+function useUser() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    axios.get("/api/user").then(res => setUser(res.data));
+  }, []);
+
+  return user;
+}
+
+function Profile() {
+  const user = useUser(); // one instance
+}
+
+function Sidebar() {
+  const user = useUser(); // another, separate instance
+}
+ 
+```
+
+Here, `Profile` and `Sidebar` will fetch independently; they do **not** share the same user state. If you want them to share, you must introduce a shared store: 
+
+- Context, 
+
+- a global store (Redux, Zustand, etc.), 
+
+- or some in‑memory cache you manage.
+
+## How they work together in practice
+
+The common pattern is:
+
+- Use **Context** to hold the shared data/store.
+
+- Use a **custom hook** as a nice API over that context.
+
+Example:
+
+```jsx
+const UserContext = createContext(null);
+
+function UserProvider({ children }) {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    axios.get("/api/user").then(res => setUser(res.data));
+  }, []);
+
+  const value = { user, setUser };
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
+}
+
+function useUser() {
+  const ctx = useContext(UserContext);
+  if (!ctx) throw new Error("useUser must be used within <UserProvider>");
+  return ctx;
+}
+
+// Usage
+function Profile() {
+  const { user } = useUser(); // shared instance
+}
+
+```
+
+Now `useUser` is a custom hook, but it reads from `Context`, so every component that uses `useUser` shares the same Axios‑backed data.
+
+#### Rules of thumb for axios case
+
+- If we just need reusable **fetch logic** and each component can have its own request/lifecycle → <mark>custom hook only.</mark>
+
+- If you need **one shared cache/state** (e.g., fetched once, read many places, stays in sync) → <mark>Context for storage</mark> + custom hook as the access helper.
+
+- Avoid using a `custom hook` with internal `useState` for “shared” data unless you back it with `Context` or some other global store; otherwise you’ll get multiple independent fetches and inconsistent views.
+
+## Axios/context api
+
+- [Axios/context api]([userBorrowBookFront/docs/axios-async/axios-context-book.md at master · AlbertProfe/userBorrowBookFront · GitHub](https://github.com/AlbertProfe/userBorrowBookFront/blob/master/docs/axios-async/axios-context-book.md))
+
+> **The Context + Axios Service Middleware pattern** is a clean, scalable way to manage API calls in React applications.
+
+We create a <mark>single service object</mark> containing all `Axios-based` methods (`get`, `post`, `put`, `delete`, etc.), often with shared configuration such as baseURL, headers, interceptors for authentication (JWT), global error handling, request logging, or retry logic.
+
+This service object is then provided via **React Context** at the top of the component tree using a `Provider` component. <mark>Components consume it</mark> through a custom hook (e.g. `useApi()`), gaining access to the same centralized, configured `Axios` instance without prop drilling or repeated imports.
+
+**Key benefits**:
+
+- Single place for auth tokens, interceptors, and error/toast handling
+- Consistent API behavior across the entire app
+- Easy testing (mock the service via Provider)
+- Simple to evolve later (swap Axios → fetch, TanStack Query, etc.)
+- Avoids duplication and keeps components focused on UI logic
+
+> Ideal for medium to large React apps needing reliable, maintainable HTTP communication.
+
+
+
+![](https://raw.githubusercontent.com/AlbertProfe/userBorrowBookFront/refs/heads/master/docs/axios-async/axios_context%20api%20-%20visual%20selection%20(copy).png)
+
+Here is a clean **summary of the 4 steps** to use **React Context** with an **API service** (axios-based) to buid a middleware:
+
+1. **Create the API service object**  
+   Define a plain JavaScript object (e.g. `BookService` or `ApiService`) that contains all your API methods using **axios** (`getAllBooks`, `createBook`, `updateBook`, `deleteBook`, etc.).  
+   Export this object as the default export.  
+   → This is your reusable service layer, independent of React.
+
+2. **Create Context + Provider + Custom Hook**  
+   
+   - Use `React.createContext()` and pass your service object as the **default value**.  
+   - Create a **custom hook** (`useBookService` / `useApiService`) that calls `useContext()`.  
+   - Create a **Provider component** (`BookServiceProvider`) that wraps children and provides the service object via `<Context.Provider value={BookService}>`.  
+     → All three (Context, hook, provider) usually live in the same file as the service.
+
+3. **Wrap your application (or relevant subtree) with the Provider**  
+   Place `<BookServiceProvider>` (or `ApiServiceProvider`) high in the component tree — most commonly around `<App>` or the main content.  
+   Example:
+   
+   ```jsx
+   <BookServiceProvider>
+     <div className="App">
+       <h1>My App</h1>
+       <BookList />
+     </div>
+   </BookServiceProvider>
+   ```
+   
+   → This makes the service available to all descendant components.
+
+4. **Consume the service in any component using the custom hook**  
+   Inside any component that needs API calls:  
+   
+   - Call the custom hook: `const bookService = useBookService()`  
+   - Use the methods directly: `await bookService.getAllBooks()`, etc.  
+   - Typically combined with `useState` + `useEffect` for data fetching.  
+     → No prop drilling, clean access anywhere below the provider.
+
+> **Quick mental checklist**: 
+> 
+> Service → Context + Hook + Provider → Wrap app → Use hook in components.
 
 ## package.json
 
