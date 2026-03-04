@@ -90,9 +90,17 @@ $ tree
 
 ![](https://raw.githubusercontent.com/AlbertProfe/ApartmentPredictor-React/refs/heads/master/docs/diagrams/TREE-ApartmentPredictor_v2-2.png)
 
-Project structure: <mark>folder tree with new domains</mark>
+### Project structure
+
+New folder tree with new domains: CRUD operations and middleware.
+
+#### Middleware domain
 
 ![](https://raw.githubusercontent.com/AlbertProfe/ApartmentPredictor-React/refs/heads/master/docs/screenshots/PROJECT_apartmentPredictorReact-v2.png)
+
+#### CRUD domain
+
+![](https://raw.githubusercontent.com/AlbertProfe/ApartmentPredictor-React/refs/heads/master/docs/screenshots/PROJECT_apartmentPredictorReact-v2-2.png)
 
 ## Data model
 
