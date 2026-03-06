@@ -51,7 +51,7 @@ const ApartmentApiService = {
 
   deleteApartment: async (apartmentId) => {
     try {
-      const response = await axios.delete(`${API_BASE_URL}/${apartmentId}`);
+      const response = await axios.delete(`${API_BASE_URL}/deleteById?id=${apartmentId}`);
       return response.data;
     } catch (error) {
       console.error(`Error deleting apartment ${apartmentId}:`, error);

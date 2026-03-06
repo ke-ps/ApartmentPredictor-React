@@ -1,7 +1,7 @@
 // src/apartment/ApartmentList.jsx
 import { useState } from "react";
-import axios from "axios";
 import { useApartments } from "../data/useApartments";
+import { useApartmentService } from "../middleware/apartmentServiceHooks";
 import ApartmentForm from "../components/ApartmentForm";
 import ApartmentListContainer from "./ApartmentListContainer";
 import ApartmentDetail from "./ApartmentDetail";
@@ -9,6 +9,9 @@ import ApartmentDetail from "./ApartmentDetail";
 const ApartmentList = ({ refreshTrigger }) => {
   // Use the custom hook to get apartments data and states
   const { apartments, isLoading, isAxiosError, refetch } = useApartments(refreshTrigger);
+  
+  // Use the apartment service for API calls
+  const apartmentService = useApartmentService();
   
   // View state management
   const [selectedApartment, setSelectedApartment] = useState(null);
@@ -45,11 +48,17 @@ const ApartmentList = ({ refreshTrigger }) => {
 
     setIsDeleting(true);
     try {
-      await axios.delete(`/api/apartment/${apartmentId}`);
+      await apartmentService.deleteApartment(apartmentId);
       refetch();
     } catch (error) {
       console.error("Error deleting apartment:", error);
-      alert("Failed to delete apartment");
+      if (error.response?.status === 500) {
+        alert("Failed to delete apartment: Database constraint violation. Please contact administrator.");
+      } else if (error.response?.status === 404) {
+        alert("Apartment not found or already deleted.");
+      } else {
+        alert("Failed to delete apartment. Please try again later.");
+      }
     } finally {
       setIsDeleting(false);
     }
