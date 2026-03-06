@@ -1,19 +1,116 @@
 // src/apartment/ApartmentList.jsx
+import { useState } from "react";
+import axios from "axios";
 import { useApartments } from "../data/useApartments";
-import ApartmentListView from "../view/ApartmentListView";
+import ApartmentForm from "../components/ApartmentForm";
+import ApartmentListContainer from "./ApartmentListContainer";
+import ApartmentDetail from "./ApartmentDetail";
 
-const ApartmentList = () => {
+const ApartmentList = ({ refreshTrigger }) => {
   // Use the custom hook to get apartments data and states
-  // we use destructuring assignment to extract the values
-  const { apartments, isLoading, isAxiosError } = useApartments();
+  const { apartments, isLoading, isAxiosError, refetch } = useApartments(refreshTrigger);
+  
+  // View state management
+  const [selectedApartment, setSelectedApartment] = useState(null);
+  const [showDetail, setShowDetail] = useState(false);
+  const [showUpdateForm, setShowUpdateForm] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
-  // Render the ApartmentListView with the fetched data and states
+  // Render loading state
+  if (isLoading) {
+    return (
+      <>
+        <h1>Apartments</h1>
+        <p>This is an exercise to test react render</p>
+        <p>Loading...</p>
+      </>
+    );
+  }
+
+  // Render error state
+  if (isAxiosError) {
+    return (
+      <>
+        <h1>Apartments</h1>
+        <p>This is an exercise to test react render</p>
+        <p>Error loading apartments. Please try again later.</p>
+      </>
+    );
+  }
+
+  const handleDelete = async (apartmentId) => {
+    if (!window.confirm("Are you sure you want to delete this apartment?")) {
+      return;
+    }
+
+    setIsDeleting(true);
+    try {
+      await axios.delete(`/api/apartment/${apartmentId}`);
+      refetch();
+    } catch (error) {
+      console.error("Error deleting apartment:", error);
+      alert("Failed to delete apartment");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const handleDetail = (apartment) => {
+    setSelectedApartment(apartment);
+    setShowDetail(true);
+    setShowUpdateForm(false);
+  };
+
+  const handleUpdate = (apartment) => {
+    setSelectedApartment(apartment);
+    setShowUpdateForm(true);
+    setShowDetail(false);
+  };
+
+  const handleFormSuccess = () => {
+    setShowUpdateForm(false);
+    setSelectedApartment(null);
+    refetch();
+  };
+
+  const handleCancel = () => {
+    setShowUpdateForm(false);
+    setShowDetail(false);
+    setSelectedApartment(null);
+  };
+
+  // Render apartments list
   return (
-    <ApartmentListView
-      apartments={apartments}
-      isLoading={isLoading}
-      isAxiosError={isAxiosError}
-    />
+    <>
+      <h1>Apartments</h1>
+      <p>This is an exercise to test react render</p>
+      
+      {showUpdateForm && selectedApartment && (
+        <div className="card update-form-container">
+          <h2>Update Apartment</h2>
+          <ApartmentForm
+            apartment={selectedApartment}
+            onSuccess={handleFormSuccess}
+            onCancel={handleCancel}
+          />
+        </div>
+      )}
+
+      {showDetail && selectedApartment && (
+        <ApartmentDetail 
+          apartment={selectedApartment} 
+          onClose={handleCancel}
+        />
+      )}
+
+      <ApartmentListContainer 
+        apartments={apartments}
+        onDetail={handleDetail}
+        onUpdate={handleUpdate}
+        onDelete={handleDelete}
+        isDeleting={isDeleting}
+      />
+    </>
   );
 };
 

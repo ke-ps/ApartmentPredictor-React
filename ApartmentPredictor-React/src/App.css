@@ -34,7 +34,19 @@
 }
 
 .card {
-  padding: 2em;
+  padding: 1.5em;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), 
+              0 0 0 1px rgba(255, 255, 255, 0.1);
+  transition: box-shadow 0.2s ease;
+  margin: 1rem auto;
+  max-width: 620px;
+}
+
+.card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2), 
+              0 0 0 1px rgba(255, 255, 255, 0.15);
 }
 
 .read-the-docs {
