@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import ApartmentUpdate from "./ApartmentUpdate";
 
-const ApartmentDetail = ({ apartment, onClose, onUpdate }) => {
+const ApartmentDetail = ({ apartment, onClose, onUpdateSubmit }) => {
   const [isEditing, setIsEditing] = useState(false);
 
   if (!apartment) return null;
 
   const handleEditSuccess = () => {
     setIsEditing(false);
-    if (onUpdate) onUpdate();
   };
 
   return (
@@ -35,6 +34,7 @@ const ApartmentDetail = ({ apartment, onClose, onUpdate }) => {
               <h3>Edit Apartment</h3>
               <ApartmentUpdate 
                 apartment={apartment}
+                onSubmit={onUpdateSubmit}
                 onSuccess={handleEditSuccess}
                 onCancel={() => setIsEditing(false)}
               />

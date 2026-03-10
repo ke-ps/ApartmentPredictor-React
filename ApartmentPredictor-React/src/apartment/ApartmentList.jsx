@@ -2,11 +2,11 @@
 import { useState } from "react";
 import { useApartments } from "../data/useApartments";
 import { useApartmentService } from "../middleware/apartmentServiceHooks";
-import ApartmentForm from "../components/ApartmentForm";
+import ApartmentUpdate from "./ApartmentUpdate";
 import ApartmentListContainer from "./ApartmentListContainer";
 import ApartmentDetail from "./ApartmentDetail";
 
-const ApartmentList = ({ refreshTrigger }) => {
+const ApartmentList = ({ refreshTrigger, onUpdateSubmit }) => {
   // Use the custom hook to get apartments data and states
   const { apartments, isLoading, isAxiosError, refetch } = useApartments(refreshTrigger);
   
@@ -97,8 +97,9 @@ const ApartmentList = ({ refreshTrigger }) => {
       {showUpdateForm && selectedApartment && (
         <div className="card update-form-container">
           <h2>Update Apartment</h2>
-          <ApartmentForm
+          <ApartmentUpdate
             apartment={selectedApartment}
+            onSubmit={onUpdateSubmit}
             onSuccess={handleFormSuccess}
             onCancel={handleCancel}
           />
@@ -109,6 +110,7 @@ const ApartmentList = ({ refreshTrigger }) => {
         <ApartmentDetail 
           apartment={selectedApartment} 
           onClose={handleCancel}
+          onUpdateSubmit={onUpdateSubmit}
         />
       )}
 

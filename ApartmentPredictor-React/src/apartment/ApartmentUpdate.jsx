@@ -1,9 +1,7 @@
 import { useState } from "react";
-import { useApartmentService } from "../middleware/apartmentServiceHooks";
 import ApartmentForm from "../components/ApartmentForm";
 
-const ApartmentUpdate = ({ apartment, onSuccess, onCancel }) => {
-  const apartmentService = useApartmentService();
+const ApartmentUpdate = ({ apartment, onSubmit, isLoading, error, onSuccess, onCancel }) => {
   const [formData, setFormData] = useState({
     price: apartment?.price || "",
     area: apartment?.area || "",
@@ -20,8 +18,6 @@ const ApartmentUpdate = ({ apartment, onSuccess, onCancel }) => {
     furnishingstatus: apartment?.furnishingstatus || "unfurnished"
   });
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -31,34 +27,12 @@ const ApartmentUpdate = ({ apartment, onSuccess, onCancel }) => {
     }));
   };
 
-  const transformFormData = (data) => {
-    return {
-      ...data,
-      // Convert parking from boolean to integer (0 or 1)
-      parking: data.parking ? 1 : 0,
-      // Convert other boolean fields to "yes"/"no" strings
-      mainroad: data.mainroad ? "yes" : "no",
-      guestroom: data.guestroom ? "yes" : "no",
-      basement: data.basement ? "yes" : "no",
-      hotwaterheating: data.hotwaterheating ? "yes" : "no",
-      airconditioning: data.airconditioning ? "yes" : "no",
-      prefarea: data.prefarea ? "yes" : "no"
-    };
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    setError("");
-
-    try {
-      const transformedData = transformFormData(formData);
-      await apartmentService.updateApartment({ ...transformedData, id: apartment.id });
+    const success = await onSubmit(formData, apartment.id);
+    if (success) {
       onSuccess();
-    } catch (err) {
-      setError(err.response?.data?.message || "Failed to update apartment");
-    } finally {
-      setIsLoading(false);
     }
   };
 
