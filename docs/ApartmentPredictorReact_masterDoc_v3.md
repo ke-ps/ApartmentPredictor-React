@@ -4,7 +4,13 @@
 
 ### Version Goal
 
-todo
+In this version we are going to implement a modern <mark>Material-UI navigation architecture</mark> featuring a **responsive sidebar drawer** with collapsible **menu items**, integrated `React Router DOM` for client-side routing between apartment management, dashboard, and several `pages`. 
+
+Apply consistent <mark>theming</mark> using MUI's `sx` props for rapid styling with design tokens, ensuring dark/light mode support and responsive breakpoints. 
+
+The `drawer` will slide in/out with smooth animations, include active route highlighting, and maintain accessibility standards. 
+
+> This foundation will provide scalable navigation patterns for future feature expansion while maintaining clean separation between routing logic and UI components.
 
 ### Product Goal
 
@@ -49,39 +55,39 @@ The final product integrates geospatial visualization with interactive maps, con
 ## Project Structure
 
 ```textile
-[Fri Mar 06 10:50:41] albert@albert-VirtualBox:~/MyProjects/Sandbox/ApartmentPredictorProject-React/ApartmentPredictor-React/src (master)
+[Thu Mar 12 08:33:33] albert@albert-VirtualBox:~/MyProjects/Sandbox/ApartmentPredictorProject-React/ApartmentPredictor-React/src (master)
 $ tree
 .
 ├── apartment
-│   ├── ApartmentDetail.jsx
-│   ├── ApartmentItem.jsx
-│   ├── Apartment.jsx
-│   ├── ApartmentListContainer.jsx
-│   └── ApartmentList.jsx
+│   ├── ApartmentCreate.jsx
+│   ├── ApartmentCRUD.jsx
+│   ├── ApartmentDetail.jsx
+│   ├── ApartmentItem.jsx
+│   ├── ApartmentListContainer.jsx
+│   ├── ApartmentList.jsx
+│   └── ApartmentUpdate.jsx
 ├── App.css
 ├── App.jsx
 ├── assets
-│   └── apartmentNewYork.jpg
+│   └── apartmentNewYork.jpg
 ├── auth
 ├── components
-│   └── ApartmentForm.jsx
+│   └── ApartmentForm.jsx
 ├── data
-│   └── useApartments.jsx
+│   └── useApartments.jsx
+├── hooks
 ├── index.css
+├── Init.jsx
 ├── layout
 ├── main.jsx
 ├── middleware
-│   └── ApartmentContextAPI.jsx
+│   ├── apartmentApiService.js
+│   ├── apartmentServiceHooks.jsx
+│   └── apartmentService.jsx
 ├── navigation
-├── themes
 └── pages
-    ├── HomePage.jsx
-    ├── PropertyPage.jsx
-    ├── MapPage.jsx
-    ├── PredictorPage.jsx
     └── ApartmentPage.jsx
 
-10 directories, 13 files
 ```
 
 **Node/Component tree**: product goal

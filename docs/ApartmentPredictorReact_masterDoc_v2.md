@@ -104,6 +104,8 @@ New folder tree with new domains: CRUD operations and middleware.
 
 #### v2
 
+![](https://raw.githubusercontent.com/AlbertProfe/ApartmentPredictor-React/refs/heads/master/docs/screenshots/PROJECT_apartmentPredictorReact-v2-3.png)
+
 ![](https://raw.githubusercontent.com/AlbertProfe/ApartmentPredictor-React/refs/heads/master/docs/screenshots/PROJECT_apartmentPredictorReact-v2-4.png)
 
 ## Data model
