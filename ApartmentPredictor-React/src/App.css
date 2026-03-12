@@ -52,3 +52,36 @@
 .read-the-docs {
   color: #888;
 }
+
+/* HomePage Styles */
+.homepage-container {
+  max-width: 960px;
+  margin: 32px auto;
+}
+
+.homepage-header {
+  position: relative;
+  text-align: center;
+}
+
+.homepage-title {
+  position: absolute;
+  top: 300px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+  font-size: 4.5rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.homepage-image {
+  max-width: 900px;
+  height: auto;
+}
+
+.homepage-content {
+  margin: 32px 0;
+  text-align: center;
+}
