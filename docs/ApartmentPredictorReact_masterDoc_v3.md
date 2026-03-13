@@ -190,6 +190,8 @@ todo (how TO install MUI)
 
 ## MUI Drawer Navigation
 
+![](https://raw.githubusercontent.com/AlbertProfe/ApartmentPredictor-React/refs/heads/master/docs/screenshots/CODE-material-ui-navigation-drawer.png)
+
 Let's create a Material-UI drawer navigation system with <mark>React Router</mark> for the Apartment Predictor application.
 
 > The implementation provides a modern, user-friendly navigation experience while maintaining clean, maintainable code structure.
