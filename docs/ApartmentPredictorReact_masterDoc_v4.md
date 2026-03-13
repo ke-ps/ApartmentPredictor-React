@@ -4,7 +4,7 @@
 
 ### Version Goal
 
-todo
+Reviews and Reviewer for all apartments.
 
 ### Product Goal
 
@@ -85,9 +85,11 @@ $ tree
 
 **Node/Component tree**: product goal
 
-![](https://raw.githubusercontent.com/AlbertProfe/ApartmentPredictor-React/refs/heads/master/docs/diagrams/TREE-ApartmentPredictor_v3.png)
+![](https://raw.githubusercontent.com/AlbertProfe/ApartmentPredictor-React/refs/heads/master/docs/diagrams/TREE-apartmentPredictor-v4.png)
 
-## Data model
+**Project structure**
+
+![](https://raw.githubusercontent.com/AlbertProfe/ApartmentPredictor-React/refs/heads/master/docs/screenshots/PROJECT_apartmentPredictorReact-v4.png)
 
 DATA REST <mark>endpoint</mark>
 
@@ -174,7 +176,9 @@ DATA REST <mark>endpoint</mark>
 }
 ```
 
-## 
+## Code
+
+todo  
 
 ## package.json
 
@@ -185,6 +189,7 @@ DATA REST <mark>endpoint</mark>
 - axios (^1.13.2): HTTP client for making API requests to fetch apartment data
 - `react` (^19.2.0): Core React library for building UI components
 - `react-dom` (^19.2.0): Renders React components to the DOM
+- `@mui` dependencies
 
 **Development Dependencies:**
 
